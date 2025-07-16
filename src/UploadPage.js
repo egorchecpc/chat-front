@@ -22,7 +22,7 @@ function UploadPage() {
     files.forEach((file) => formData.append("files", file));
 
     try {
-      await axios.post("http://localhost:5000/upload", formData, {
+      await axios.post("https://back-brs4.onrender.com/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

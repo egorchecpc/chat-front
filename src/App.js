@@ -6,6 +6,7 @@ function App() {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
   const [model, setModel] = useState("chat_gpt");
+  const [search_service, setSearchService] = useState("elastic");
   const navigate = useNavigate();
 
   const handleAsk = async () => {
@@ -16,14 +17,15 @@ function App() {
     setQuestion("");
 
     try {
-      const res = await axios.post("http://localhost:5000/ask", {
+      const res = await axios.post("https://back-brs4.onrender.com/ask", {
         question: userMessage,
         model: model,
+        search_service: search_service
       });
 
       const { answer, docs } = res.data;
 
-      const formattedAnswer = `${answer}\n\n(Источники: ${docs.join(", ")})\n\nМодель: ${model}`;
+      const formattedAnswer = `${answer}\n\n(Источники: ${docs.join(", ")})\n\nМодель: ${model} \n\nСистема поиска: ${search_service}`;
 
       setMessages((prev) => [
         ...prev,
@@ -79,7 +81,7 @@ function App() {
         </div>
 
         {/* Поле ввода и кнопка */}
-        <div className="flex gap-4 mb-4">
+        <div className="flex gap-4 mb-4 flex-wrap">
           <input
             type="text"
             value={question}
@@ -102,9 +104,17 @@ function App() {
             <option value="giga_chat">GigaChat</option>
             <option value="yandex_gpt">YandexGPT</option>
           </select>
+          <select
+            value={search_service}
+            onChange={(e) => setSearchService(e.target.value)}
+            className="p-2 border border-gray-300 rounded"
+          >
+            <option value="elastic">Elastic</option>
+            <option value="gpt">Gpt</option>
+          </select>
           <button
             onClick={handleAsk}
-            className="bg-blue-600 text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition"
+            className="bg-blue-600 w-full text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition"
           >
             Спросить
           </button>
