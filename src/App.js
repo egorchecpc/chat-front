@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Logo2 from './assets/logo2.png';
+import Logo1 from './assets/logo.png';
 
 function App() {
   const [question, setQuestion] = useState("");
@@ -17,7 +19,7 @@ function App() {
     setQuestion("");
 
     try {
-      const res = await axios.post("https://back-brs4.onrender.com/ask", {
+      const res = await axios.post("http://localhost:5000/ask", {
         question: userMessage,
         model: model,
         search_service: search_service
@@ -44,30 +46,33 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="bg-white shadow-xl rounded-2xl p-8 max-w-xl w-full flex flex-col">
-        <h1 className="text-3xl font-bold text-blue-600 mb-6 text-center">
-          AI Вопросник
-        </h1>
+        <div className='flex items-center justify-center gap-2'>
+          <img src={Logo1} alt="Whitebird Logo" className="w-8 h-8 mt-[-25px]"/>
+          <h1 className="text-3xl font-bold text-blue-600 mb-6 text-center">
 
+            AI База знаний
+          </h1>
+        </div>
         {/* Окно диалога */}
         <div
-          className="flex-1 overflow-y-auto border border-gray-300 rounded-lg p-4 mb-4 bg-gray-50 flex flex-col"
-          style={{ minHeight: "300px", maxHeight: "400px" }}
+            className="flex-1 overflow-y-auto border border-gray-300 rounded-lg p-4 mb-4 bg-gray-50 flex flex-col"
+            style={{minHeight: "300px", maxHeight: "400px"}}
         >
           {messages.length === 0 && (
-            <p className="text-gray-400 text-center">
-              Задайте вопрос, чтобы начать диалог
-            </p>
+              <p className="text-gray-400 text-center">
+                Задайте вопрос, чтобы начать диалог
+              </p>
           )}
 
           {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`mb-3 max-w-[70%] p-3 rounded-xl ${
-                msg.type === "user"
-                  ? "bg-blue-600 text-white self-end"
-                  : "bg-gray-200 text-gray-800 self-start"
-              }`}
-            >
+              <div
+                  key={idx}
+                  className={`mb-3 max-w-[70%] p-3 rounded-xl ${
+                      msg.type === "user"
+                          ? "bg-blue-600 text-white self-end"
+                          : "bg-gray-200 text-gray-800 self-start"
+                  }`}
+              >
               <pre style={{
                 whiteSpace: "pre-wrap",
                 wordBreak: "break-word",
@@ -76,45 +81,45 @@ function App() {
               }}>
                 {msg.text}
               </pre>
-            </div>
+              </div>
           ))}
         </div>
 
         {/* Поле ввода и кнопка */}
         <div className="flex gap-4 mb-4 flex-wrap">
           <input
-            type="text"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="Введите вопрос"
-            className="flex-1 p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                handleAsk();
-              }
-            }}
+              type="text"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="Введите вопрос"
+              className="flex-1 p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleAsk();
+                }
+              }}
           />
           <select
-            value={model}
-            onChange={(e) => setModel(e.target.value)}
-            className="p-2 border border-gray-300 rounded"
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              className="p-2 border border-gray-300 rounded"
           >
             <option value="chat_gpt">ChatGPT</option>
             <option value="giga_chat">GigaChat</option>
             <option value="yandex_gpt">YandexGPT</option>
           </select>
           <select
-            value={search_service}
-            onChange={(e) => setSearchService(e.target.value)}
-            className="p-2 border border-gray-300 rounded"
+              value={search_service}
+              onChange={(e) => setSearchService(e.target.value)}
+              className="p-2 border border-gray-300 rounded"
           >
             <option value="elastic">Elastic</option>
             <option value="gpt">Gpt</option>
           </select>
           <button
-            onClick={handleAsk}
-            className="bg-blue-600 w-full text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition"
+              onClick={handleAsk}
+              className="bg-blue-600 w-full text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition"
           >
             Спросить
           </button>
@@ -122,8 +127,8 @@ function App() {
 
         {/* Кнопка перехода на страницу загрузки */}
         <button
-          onClick={() => navigate("/upload")}
-          className="text-sm text-blue-500 hover:underline text-center"
+            onClick={() => navigate("/upload")}
+            className="text-sm text-blue-500 hover:underline text-center"
         >
           Загрузить данные
         </button>
