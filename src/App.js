@@ -8,7 +8,7 @@ function App() {
   const [question, setQuestion] = useState("");
   const [messages, setMessages] = useState([]);
   const [model, setModel] = useState("chat_gpt");
-  const [search_service, setSearchService] = useState("elastic");
+  const [search_service, setSearchService] = useState("gpt");
   const navigate = useNavigate();
 
   const handleAsk = async () => {
